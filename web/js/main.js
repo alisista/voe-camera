@@ -16,8 +16,6 @@ stampRightEar.src = "./images/voe/voe_left_ear.png";
 stampLeftEar.src = "./images/voe/voe_right_ear.png";
 
 if (!!navigator.mediaDevices && !!navigator.mediaDevices.getUserMedia) {
-  // 対応環境
-  // getUserMedia によるカメラ映像の取得
   navigator.mediaDevices.getUserMedia({audio: false, video: {facingMode: "user"}})
     .then(function (stream) {
       try {
@@ -31,20 +29,16 @@ if (!!navigator.mediaDevices && !!navigator.mediaDevices.getUserMedia) {
       window.alert("カメラの使用が許可されませんでした");
     });
 
-  // clmtrackr の開始
   var tracker = new clm.tracker();
   // tracker を所定のフェイスモデル（※）で初期化
   tracker.init(pModel);
   // video 要素内でフェイストラッキング開始
   tracker.start(video);
 
-  // 描画ループ
   function drawLoop() {
-    // drawLoop 関数を繰り返し実行
     requestAnimationFrame(drawLoop);
     // 顔部品の現在位置の取得
     let positions = tracker.getCurrentPosition();
-    // canvas をクリア
     context.clearRect(0, 0, canvas.width, canvas.height);
     drawStamp(positions, stampMouth, 53, 1.5, 0.0, 0.0);
     drawStamp(positions, stampNose, 62, 0.5, 0.0, 0.0);
@@ -56,22 +50,18 @@ if (!!navigator.mediaDevices && !!navigator.mediaDevices.getUserMedia) {
 
   drawLoop();
 
-  // (顔部品の位置データ, 画像, 基準位置, 大きさ, 横シフト, 縦シフト)
   // 基準位置の参考 => https://github.com/auduno/clmtrackr
   function drawStamp(pos, img, bNo, scale, hShift, vShift) {
-
     const eyes = pos[32][0] - pos[27][0], // 幅の基準として両眼の間隔を求める
       nose = pos[62][1] - pos[33][1],// 高さの基準として眉間と鼻先の間隔を求める
       wScale = eyes / img.width, // 両眼の間隔をもとに画像のスケールを決める
-      imgW = img.width * scale * wScale, // 画像の幅をスケーリング
-      imgH = img.height * scale * wScale, // 画像の高さをスケーリング
-      imgL = pos[bNo][0] - imgW / 2 + eyes * hShift, // 画像のLeftを決める
-      imgT = pos[bNo][1] - imgH / 2 + nose * vShift;// 画像のTopを決める
-    // 画像を描く
+      imgW = img.width * scale * wScale,
+      imgH = img.height * scale * wScale,
+      imgL = pos[bNo][0] - imgW / 2 + eyes * hShift,
+      imgT = pos[bNo][1] - imgH / 2 + nose * vShift;
     context.drawImage(img, imgL, imgT, imgW, imgH);
   }
 
 } else {
-  // 非対応環境
   window.alert("WebRTC非対応環境です");
 }
