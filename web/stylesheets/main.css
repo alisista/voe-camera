@@ -1,0 +1,14 @@
+#container {
+  position: relative;
+}
+
+#video {
+  transform: scaleX(-1);
+}
+
+#canvas {
+  transform: scaleX(-1);
+  position: absolute;
+  left: 0;
+  top: 0;
+}
