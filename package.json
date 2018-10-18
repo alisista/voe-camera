@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "deploy": "npx gh-pages -d ."
+    "deploy:web": "npx gh-pages -d ./web"
   },
   "author": "",
   "license": "ISC",
