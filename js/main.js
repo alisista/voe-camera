@@ -19,7 +19,7 @@ if (!!navigator.mediaDevices && !!navigator.mediaDevices.getUserMedia) {
   // 対応環境
   // getUserMedia によるカメラ映像の取得
   const media = navigator.mediaDevices.getUserMedia({
-    video: {},
+    video: {facingMode: "user"},
     audio: false
   });
 
