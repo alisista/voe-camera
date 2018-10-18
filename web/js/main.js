@@ -23,7 +23,12 @@ const media = navigator.mediaDevices.getUserMedia({
 
 media.then((stream) => {
   video.src = window.URL.createObjectURL(stream);
-});
+}).catch(
+  function (err) {
+    //カメラの許可がされなかった場合にエラー
+    window.alert("カメラの使用が許可されませんでした");
+  }
+);
 
 // clmtrackr の開始
 let tracker = new clm.tracker();
