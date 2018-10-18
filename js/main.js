@@ -19,15 +19,15 @@ if (!!navigator.mediaDevices && !!navigator.mediaDevices.getUserMedia) {
   // 対応環境
   // getUserMedia によるカメラ映像の取得
   const media = navigator.mediaDevices.getUserMedia({
-    video: {facingMode: "user"},
-    audio: false
+    video: {}
   });
 
-  media.then((stream) => {
+  media.then(function(stream) {
     video.src = window.URL.createObjectURL(stream);
   }).catch(
     function (err) {
       //カメラの許可がされなかった場合にエラー
+      console.log(err.message);
       window.alert("カメラの使用が許可されませんでした");
     }
   );
