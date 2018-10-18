@@ -18,22 +18,21 @@ stampLeftEar.src = "./images/voe/voe_right_ear.png";
 if (!!navigator.mediaDevices && !!navigator.mediaDevices.getUserMedia) {
   // 対応環境
   // getUserMedia によるカメラ映像の取得
-  const media = navigator.mediaDevices.getUserMedia({
-    video: {facingMode: "user"},
-    audio: false
-  });
-
-  media.then((stream) => {
-    video.src = window.URL.createObjectURL(stream);
-  }).catch(
-    function (err) {
-      //カメラの許可がされなかった場合にエラー
+  navigator.mediaDevices.getUserMedia({audio: false, video: {facingMode: "user"}})
+    .then(function (stream) {
+      try {
+        video.srcObject = stream;
+      } catch (err) {
+        video.src = URL.createObjectURL(stream);
+      }
+    })
+    .catch(function (err) {
+      console.log(err.message);
       window.alert("カメラの使用が許可されませんでした");
-    }
-  );
+    });
 
   // clmtrackr の開始
-  let tracker = new clm.tracker();
+  var tracker = new clm.tracker();
   // tracker を所定のフェイスモデル（※）で初期化
   tracker.init(pModel);
   // video 要素内でフェイストラッキング開始
